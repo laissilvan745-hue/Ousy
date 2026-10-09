@@ -6,7 +6,9 @@
 
 create type provenance as enum ('briefing', 'oficial', 'terceiros', 'hipotese', 'interno');
 create type verification_status as enum ('pendente', 'verificado', 'divergente', 'desatualizado');
-create type construction_stage as enum ('nao_informado', 'pre_lancamento', 'lancamento', 'fundacao', 'em_obras', 'pronto', 'entregue');
+create type sales_status as enum ('nao_verificado', 'a_venda', 'sem_selo', 'ultimas_unidades', 'esgotado');
+create type monitor_status as enum ('ativo', 'candidato', 'arquivado');
+create type construction_stage as enum ('nao_informado', 'futuro_lancamento', 'breve_lancamento', 'pre_lancamento', 'lancamento', 'fundacao', 'em_obras', 'pronto', 'entregue');
 create type price_type as enum ('a_partir_de', 'tabela_unidade', 'promocional', 'faixa');
 create type geo_status as enum ('nao_geocodificado', 'geocodificado_pendente', 'aproximado', 'validado');
 create type user_role as enum ('admin', 'analista', 'leitor');
@@ -66,6 +68,9 @@ create table developments (
   target_audience text, positioning text, differentials text, amenities text, availability_note text,
   -- obra e datas ('AAAA-MM' ou 'AAAA', preservando a precisão informada)
   stage construction_stage not null default 'nao_informado', stage_note text,
+  sales_status sales_status not null default 'nao_verificado', sales_status_note text,
+  monitor_status monitor_status not null default 'ativo',
+  replaces_id text references developments(id),
   launch_date text, delivery_forecast text, delivery_actual text, delivery_note text,
   -- comercial e digital
   commercial_conditions text, housing_program text,

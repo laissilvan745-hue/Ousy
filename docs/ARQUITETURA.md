@@ -52,6 +52,18 @@ Todas as coleções têm `id`, `createdAt`, `updatedAt`. Registros factuais tamb
 | `reports` | Relatórios salvos | — |
 | `attachments` | Arquivos (data URL) | — |
 
+### Situação no painel e status de venda
+`developments.monitorStatus` separa **concorrentes ativos** (entram em indicadores, radar e comparativo padrão),
+**candidatos a substituto** (`replacesId` aponta o concorrente que podem substituir) e **arquivados** (saem do painel,
+mantêm histórico). `salesStatus` registra o selo observado em fonte (`a_venda`, `sem_selo`, `ultimas_unidades`,
+`esgotado`) com a evidência em `salesStatusNote`; "100% vendido" e "últimas unidades" geram alerta.
+
+### Atualizações de dados versionadas
+O bloco `<script id="data-updates">` em `index.html` contém lotes de alterações (`upsert`, `patch`, `patchWhere`)
+aplicados uma única vez por navegador (controle em `meta/updates`), inclusive em bases já existentes. Cada
+alteração passa pelo repositório e entra no histórico com a fonte. Na fase 2, esses lotes viram migrações de dados
+ou jobs de coleta.
+
 ### Séries de preço
 Uma série = empreendimento + tipologia + unidade + metragem vinculada + tipo de preço. Variações são calculadas
 entre as duas últimas coletas da mesma série. O "preço inicial divulgado" é o menor valor vigente entre as séries.
